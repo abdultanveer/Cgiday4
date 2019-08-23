@@ -2,6 +2,7 @@ package com.example.cgiday4;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.RemoteInput;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -12,6 +13,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 
 import static androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC;
 
@@ -28,15 +31,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mNotifyManager = (NotificationManager)
                 getSystemService(NOTIFICATION_SERVICE);
+        WebView webView = findViewById(R.id.webView);
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webView.loadUrl("file:///android_asset/index.html");
 
     }
+    private static final String KEY_TEXT_REPLY = "key_text_reply";
 
     public void showNotification(View view) {
         createNotificationChannel();
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:9880979732"));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-
 
         mNotifyBuilder = new NotificationCompat.Builder(this)
                 .setContentTitle("You've been notified! title")
@@ -45,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setVisibility(VISIBILITY_PUBLIC)
                 .setChannelId("345")
+                .addAction(R.drawable.ic_launcher_foreground, "action button",pendingIntent)
                 .setSmallIcon(R.drawable.ic_launcher_background);
 
         Notification myNotification = mNotifyBuilder.build();
