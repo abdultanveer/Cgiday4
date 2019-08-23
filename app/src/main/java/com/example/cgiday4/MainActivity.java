@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private NotificationManager mNotifyManager;
 
     private static final int NOTIFICATION_ID = 0;
+String data = "<html>\\<header>this is a demo from data string</header>\\<body>this is the body</body>\\r\\n</html>";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +35,12 @@ public class MainActivity extends AppCompatActivity {
         WebView webView = findViewById(R.id.webView);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        webView.loadUrl("file:///android_asset/index.html");
+        //webView.loadUrl("file:///android_asset/index.html");
+        webView.loadData(data,"text/html", "UTF-8");
 
     }
+
+
     private static final String KEY_TEXT_REPLY = "key_text_reply";
 
     public void showNotification(View view) {
